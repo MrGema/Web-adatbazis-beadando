@@ -33,10 +33,10 @@ function fokozatkivalasztas(){
 
 function tablazat(){   
     let table=document.createElement("table")
-    for (let i = 0; i < tabla1; i++) {
+    for (let i = 1; i < tabla1+1; i++) {
         let tr=document.createElement("tr")
         tr.id=i
-        for (let j = 0; j < tabla2; j++) {
+        for (let j = 1; j < tabla2+1; j++) {
             let td=document.createElement("td")
             td.style.backgroundColor="Gray"
             tr.appendChild(td)
@@ -50,9 +50,13 @@ function tablazat(){
 }
 
 function uresmatrix() {
-    for(let i = 0; i < tabla1; i++) {
+    for(let i = 1; i < tabla1+1; i++) {
+        matrix[0]=[];
+        matrix[tabla1+1]=[];
         matrix[i]=[];
-        for (let j = 0; j < tabla2; j++) {
+        for (let j = 1; j < tabla2+1; j++) {
+            matrix[tabla1+1][j]=0;
+            matrix[0][j]=0;
             matrix[i][j] = 0;
         }
     }
@@ -60,6 +64,7 @@ function uresmatrix() {
 
 function kattintas(td){
    let kord=[Number(td.value[0]), Number(td.value[1])]
+   console.log(kord)
    if(matrix[kord[0]][kord[1]]==-1){
         alert("Veszítettél.")
         setTimeout(() => {
@@ -70,49 +75,11 @@ function kattintas(td){
             td.appendChild(kep)
         }, 100);
    }
-    if(bennevane(kord)==true){
-        sarok(kord)
-    }
-    else if(kord[0]==0 && bennevane(kord)==false){
-        felsosor(kord)
-    }
-    else if(kord[0]==tabla1-1&& bennevane(kord)==false){
-        alsosor(kord)
-    }
-    else if(kord[1]==0 && bennevane(kord)==false){
-        balszele(kord)
-    }
-    else if(kord[1]==tabla2-1 &&bennevane(kord)==false){
-        jobbszele(kord)
-    }
-    else{
-        alap(kord)
-    }
+    alap(kord)
     td.style.backgroundColor = ""
     td.innerHTML=szam
     td.style.color=szamszin();
     szam=0;
-}
-
-function bennevane(kord){
-    let van=false;
-    for(let i=0; i<sarkok.length;i++){
-        let tomb=sarkok[i]
-        if(Number(tomb[0])==Number(kord[0]) && Number(tomb[1])==Number(kord[1])){
-            van=true;
-        }
-    }
-    return van;
-}
-
-
-function sarokkivalasztas(){
-    sarkok=[
-        [0, 0],
-        [0, tabla2-1],
-        [tabla1-1, 0],
-        [tabla1-1, tabla2-1]
-    ]
 }
 
 function szamszin(){
@@ -130,82 +97,6 @@ function szamszin(){
     }
     else if(szam>4){
         return "black"
-    }
-}
-
-function felsosor(kord){
-    console.log("felsosor")
-    if(matrix[0][kord[1]+1]==-1){ //jobb mellette
-        szam++
-    }
-    if(matrix[0][kord[1]-1]==-1){ //bal mellette
-        szam++
-    }
-    if(matrix[1][kord[1]]==-1){ //alatta
-        szam++
-    }
-    if(matrix[1][kord[1]+1]==-1){ //jobb le
-        szam++
-    }
-    if(matrix[1][kord[1]-1]==-1){ //bal le
-        szam++
-    }
-}
-
-function jobbszele(kord){
-    console.log("jobbszele")
-    if(matrix[kord[0]-1][kord[1]]==-1){ //fent
-        szam++
-    }
-    if(matrix[kord[0]-1][kord[1]-1]==-1){//bal fent
-        szam++
-    }
-    if(matrix[kord[0]][kord[1]-1]==-1){ //mellette
-        szam++
-    }
-    if(matrix[kord[0]+1][kord[1]-1]==-1){ // bal le
-        szam++
-    }
-    if(matrix[kord[0]+1][kord[1]]==-1){ //alatta
-        szam++
-    }
-}
-
-function alsosor(kord){
-    console.log("alsosor")
-    if(matrix[kord[0]][kord[1]+1]==-1){ //jobb mellette
-        szam++
-    }
-    if(matrix[kord[0]][kord[1]-1]==-1){ //bal mellette
-        szam++
-    }
-    if(matrix[kord[0]-1][kord[1]]==-1){ //folotte
-        szam++
-    }
-    if(matrix[kord[0]-1][kord[1]-1]==-1){ //bal fent
-        szam++
-    }
-    if(matrix[kord[0]-1][kord[1]+1]==-1){ //jobb fent
-        szam++
-    }
-}
-
-function balszele(kord){
-    console.log("balszele")
-    if(matrix[kord[0]-1][kord[1]]==-1){ //fent
-        szam++
-    }
-    if(matrix[kord[0]-1][kord[1]+1]==-1){//jobb fent
-        szam++
-    }
-    if(matrix[kord[0]][kord[1]+1]==-1){ //mellette
-        szam++
-    }
-    if(matrix[kord[0]+1][kord[1]-1]==-1){ //jobb le
-        szam++
-    }
-    if(matrix[kord[0]+1][kord[1]]==-1){ //alatta
-        szam++
     }
 }
 
@@ -237,53 +128,6 @@ function alap(kord){
     }
 }
 
-function sarok(kord){
-    if(kord[0]==0 && kord[1]==0){ //bal felso sarok
-        if(matrix[0][1]==-1){
-            szam++;
-        }
-        if(matrix[1][0]==-1){
-            szam++;
-        }
-        if(matrix[1][1]==-1){
-            szam++;
-        }
-    }
-    else if(kord[0]==tabla2-1 && kord[1]==0){  //bal also sarok
-        if(matrix[kord[0]-1][kord[1]]==-1){
-            szam++;
-        }
-        if(matrix[kord[0]-1][kord[1]+1]==-1){
-            szam++;
-        }
-        if(matrix[kord[0]+1[kord[1]+1]]==-1){
-            szam++;
-        }
-    }
-    else if(kord[0]==0 && kord[1]==tabla2-1){ //jobb felso sarok
-        if(matrix[kord[0]][kord[1]-1]==-1){
-            szam++;
-        }
-        if(matrix[kord[0]+1][kord[1]-1]==-1){
-            szam++;
-        }
-        if(matrix[kord[0]+1[kord[1]]]==-1){
-            szam++;
-        }
-    }
-    else if(kord[0]==tabla2-1 && kord[1]==tabla1-1){
-        if(matrix[kord[0]][kord[1]-1]==-1){
-            szam++;
-        }
-        if(matrix[kord[0]-1][kord[1]-1]==-1){
-            szam++;
-        }
-        if(matrix[kord[0]-1[kord[1]]]==-1){
-            szam++;
-        }
-    }
-}
-
 
 function randomszam(also, felso){
     return Math.floor(Math.random()*(felso-also+1)+also)
@@ -292,25 +136,23 @@ function randomszam(also, felso){
 function minefeltoltes(){
     let i=0;
     while(i<mines){
-        let mine1=randomszam(0, tabla1-1)
-        let mine2=randomszam(0, tabla2-1)
+        let mine1=randomszam(1, tabla1-2)
+        let mine2=randomszam(1, tabla2-2)
         if(matrix[mine1][mine2]==0){
             matrix[mine1][mine2]=-1
             i++;
         }
         else{
-            mine1=randomszam(0, tabla1-1)
-            mine2=randomszam(0, tabla2-1)
+            mine1=randomszam(1, tabla1-2)
+            mine2=randomszam(1, tabla2-2)
         }
     }
 }
 
 function Main(){
     fokozatkivalasztas()
-    sarokkivalasztas()
     uresmatrix()
     minefeltoltes()
-    console.log(sarkok)
     console.log(matrix)
     tablazat()
     gomb.disabled=true;
