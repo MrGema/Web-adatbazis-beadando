@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Minesweeper</title>
+</head>
+<body>
+    <label for="nehezseg">Válasszon nehézségi fokozatot</label>
+    <select id="nehezseg" name="nehezseg" size="3">
+        <option value="Kezdő" selected>Kezdő</option>
+        <option value="Haladó">Haladó</option>
+        <option value="Profi">Profi</option>
+    </select>
+    <button type="button" id="start" onclick=Main()>Start</button>
+    <div id="jatekter"></div>
+</body>
+<script src="script.js"></script>
+</html>
