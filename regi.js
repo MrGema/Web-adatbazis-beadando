@@ -35,13 +35,15 @@ function tablazat(){
     let table=document.createElement("table")
     for (let i = 0; i < tabla1; i++) {
         let tr=document.createElement("tr")
-        tr.id=i
+        tr.id=i+"t"
         for (let j = 0; j < tabla2; j++) {
             let td=document.createElement("td")
             td.style.backgroundColor="Gray"
             tr.appendChild(td)
             td.id=j
-            td.value = [tr.id ,td.id]
+            let trid=tr.id;
+            trid=trid.slice(0, 1)
+            td.value = [trid ,td.id]
             td.setAttribute("onclick", "kattintas(this)")
         }  
         table.appendChild(tr)
@@ -61,14 +63,8 @@ function uresmatrix() {
 function kattintas(td){
    let kord=[Number(td.value[0]), Number(td.value[1])]
    if(matrix[kord[0]][kord[1]]==-1){
-        alert("Veszítettél.")
-        setTimeout(() => {
-            div.innerHTML="";
-            td.style.backgroundColor = ""
-            gomb.disabled=false;
-            let kep=document.createElement("img").src="mine.png"
-            td.appendChild(kep)
-        }, 100);
+        aknafelfedes()
+        console.log("-1");
    }
     if(bennevane(kord)==true){
         sarok(kord)
@@ -82,7 +78,7 @@ function kattintas(td){
     else if(kord[1]==0 && bennevane(kord)==false){
         balszele(kord)
     }
-    else if(kord[1]==tabla2-1 &&bennevane(kord)==false){
+    else if(kord[1]==tabla2-1 && bennevane(kord)==false){
         jobbszele(kord)
     }
     else{
@@ -92,6 +88,21 @@ function kattintas(td){
     td.innerHTML=szam
     td.style.color=szamszin();
     szam=0;
+}
+
+function aknafelfedes(){
+    for (let i = 0; i < tabla1; i++) {  
+        for (let j = 0; j < tabla2; j++) {
+            if(matrix[i][j]==-1){
+                let tr=document.getElementsByTagName("tr")[0]
+                let asd=tr+":nth-child("+j+")"
+                console.log(asd)
+
+                let td=new DOMParser().parseFromString(HTMLTableCellElement,)
+                asd.style.backgroundColor="red"
+            }
+        }     
+    }
 }
 
 function bennevane(kord){
@@ -210,7 +221,6 @@ function balszele(kord){
 }
 
 function alap(kord){
-    console.log("alap")
     if(matrix[kord[0]-1][kord[1]]==-1){ //fent
         szam++
     }
