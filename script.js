@@ -1,10 +1,6 @@
 var div=document.getElementById("jatekter")
 var matrix=[];
-
-//kene dificulty
-//kezdo: 10 mine, 10x10 es tabla
-//halado: 40 mine, 16x16 os tabla
-//profi: 99 mine, 16x30 as tabla
+var matrix2=[];
 var tabla1=0;
 var tabla2=0;
 var mines=0;
@@ -35,54 +31,70 @@ function tablazat(){
     let table=document.createElement("table")
     for (let i = 1; i < tabla1+1; i++) {
         let tr=document.createElement("tr")
-        tr.id=i
+        tr.id=i+"t"
         for (let j = 1; j < tabla2+1; j++) {
             let td=document.createElement("td")
             td.style.backgroundColor="Gray"
-            tr.appendChild(td)
             td.id=j
-            td.value = [tr.id ,td.id]
+            trid=tr.id
+            trid=trid.slice(0, 1)
+            td.value = [Number(trid) ,td.id]
             td.setAttribute("onclick", "kattintas(this)")
+            tr.appendChild(td)
         }  
         table.appendChild(tr)
     }
     div.appendChild(table)
 }
 
-function uresmatrix() {
-    for(let i = 1; i < tabla1+1; i++) {
-        matrix[0]=[];
-        matrix[tabla1+1]=[];
+function uresmatrix(matrix) {
+    for(let i = 0; i < tabla1+2; i++) {
         matrix[i]=[];
-        for (let j = 1; j < tabla2+1; j++) {
-            matrix[tabla1+1][j]=0;
-            matrix[0][j]=0;
-            matrix[i][j] = 0;
+        for (let j = 0; j < tabla2+2; j++) {
+            matrix[i][j]=0;
+        }
+    }
+}
+
+function megszamolas(){
+    for(let i = 1; i < tabla1-2; i++){
+        for(let j = 1; j < tabla2-2; j++){
+            if(matrix[i][j]!=-1){
+                let kord=[i, j]
+                alap(kord)
+                matrix2[i][j]=szam;
+                szam=0;
+            }
         }
     }
 }
 
 function kattintas(td){
    let kord=[Number(td.value[0]), Number(td.value[1])]
-   console.log(kord)
    if(matrix[kord[0]][kord[1]]==-1){
-        alert("Veszítettél.")
-        setTimeout(() => {
-            div.innerHTML="";
-            td.style.backgroundColor = ""
-            gomb.disabled=false;
-            let kep=document.createElement("img").src="mine.png"
-            td.appendChild(kep)
-        }, 100);
+        aknafelfedes()
    }
-    alap(kord)
-    td.style.backgroundColor = ""
-    td.innerHTML=szam
-    td.style.color=szamszin();
-    szam=0;
+   else{
+        td.style.backgroundColor = ""
+        td.innerHTML=matrix2[kord[0]][kord[1]]
+        td.style.color=szamszin(Number(matrix2[kord[0]][kord[1]]));
+    }
 }
 
-function szamszin(){
+function aknafelfedes(){
+    for (let i = 0; i < tabla1; i++) {  
+        for (let j = 0; j < tabla2; j++) {
+            if(matrix[i][j]==-1){
+                let tr=document.getElementById(i+"t")
+                let td=tr.children[j]
+                td.style.backgroundColor=""
+                td.innerHTML="<img src='mine.png'>"
+            }
+        }     
+    }
+}
+
+function szamszin(szam){
     if(szam==1){
         return "blue";
     }
@@ -101,7 +113,6 @@ function szamszin(){
 }
 
 function alap(kord){
-    console.log("alap")
     if(matrix[kord[0]-1][kord[1]]==-1){ //fent
         szam++
     }
@@ -142,18 +153,17 @@ function minefeltoltes(){
             matrix[mine1][mine2]=-1
             i++;
         }
-        else{
-            mine1=randomszam(1, tabla1-2)
-            mine2=randomszam(1, tabla2-2)
-        }
     }
 }
 
 function Main(){
     fokozatkivalasztas()
-    uresmatrix()
+    uresmatrix(matrix)
+    uresmatrix(matrix2)
     minefeltoltes()
     console.log(matrix)
     tablazat()
+    megszamolas();
+    console.log(matrix2)
     gomb.disabled=true;
 }
