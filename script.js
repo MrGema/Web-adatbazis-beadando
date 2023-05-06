@@ -69,8 +69,25 @@ function megszamolas(){
     }
 }
 
+function aknafelfedes(){
+    for (let i = 1; i < tabla1-2; i++) {  
+        for (let j = 1; j < tabla2-2; j++) {
+            let tr=document.getElementById(i+"t")
+            let td=tr.children[j-1]
+            if(matrix[i][j]==-1){
+                td.style.backgroundColor=""
+                td.innerHTML="<img src='mine.png'>"
+            }
+            td.removeAttribute("onclick", "kattintas(this)")
+        }     
+    }
+}
+
+
+
 function kattintas(td){
    let kord=[Number(td.value[0]), Number(td.value[1])]
+   console.log(kord);
    if(matrix[kord[0]][kord[1]]==-1){
         aknafelfedes()
    }
@@ -81,18 +98,6 @@ function kattintas(td){
     }
 }
 
-function aknafelfedes(){
-    for (let i = 0; i < tabla1; i++) {  
-        for (let j = 0; j < tabla2; j++) {
-            if(matrix[i][j]==-1){
-                let tr=document.getElementById(i+"t")
-                let td=tr.children[j]
-                td.style.backgroundColor=""
-                td.innerHTML="<img src='mine.png'>"
-            }
-        }     
-    }
-}
 
 function szamszin(szam){
     if(szam==1){
