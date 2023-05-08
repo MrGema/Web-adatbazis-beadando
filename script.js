@@ -26,7 +26,6 @@ function fokozatkivalasztas(){
         mines=99;
     }
 }
-
 function tablazat(){   
     let table=document.createElement("table")
     for (let i = 1; i < tabla1+1; i++) {
@@ -34,19 +33,19 @@ function tablazat(){
         tr.id=i+"t"
         for (let j = 1; j < tabla2+1; j++) {
             let td=document.createElement("td")
-            td.style.backgroundColor="Gray"
+            td.innerHTML="<img src='alap.png'>"
             td.id=j
             trid=tr.id
             trid=trid.slice(0, 1)
             td.value = [Number(trid) ,td.id]
             td.setAttribute("onclick", "kattintas(this)")
+            td.addEventListener("contextmenu", function(){zaszlo(td)})
             tr.appendChild(td)
         }  
         table.appendChild(tr)
     }
     div.appendChild(table)
 }
-
 function uresmatrix(matrix) {
     for(let i = 0; i < tabla1+2; i++) {
         matrix[i]=[];
@@ -55,7 +54,20 @@ function uresmatrix(matrix) {
         }
     }
 }
-
+function randomszam(also, felso){
+    return Math.floor(Math.random()*(felso-also+1)+also)
+}
+function minefeltoltes(){
+    let i=0;
+    while(i<mines){
+        let mine1=randomszam(1, tabla1-2)
+        let mine2=randomszam(1, tabla2-2)
+        if(matrix[mine1][mine2]==0){
+            matrix[mine1][mine2]=-1
+            i++;
+        }
+    }
+}
 function megszamolas(){
     for(let i = 1; i < tabla1-2; i++){
         for(let j = 1; j < tabla2-2; j++){
@@ -69,33 +81,42 @@ function megszamolas(){
     }
 }
 
-function aknafelfedes(){
-    for (let i = 1; i < tabla1-2; i++) {  
-        for (let j = 1; j < tabla2-2; j++) {
-            let tr=document.getElementById(i+"t")
-            let td=tr.children[j-1]
-            if(matrix[i][j]==-1){
-                td.style.backgroundColor=""
-                td.innerHTML="<img src='mine.png'>"
-            }
-            td.removeAttribute("onclick", "kattintas(this)")
-        }     
-    }
-}
-
-
 
 function kattintas(td){
-   let kord=[Number(td.value[0]), Number(td.value[1])]
+   var kord=[Number(td.value[0]), Number(td.value[1])]
    console.log(kord);
+   td.removeAttribute("onclick", "kattintas(this)")
    if(matrix[kord[0]][kord[1]]==-1){
         aknafelfedes()
    }
    else{
-        td.style.backgroundColor = ""
+        td.style.backgroundColor = "lightgray"
         td.innerHTML=matrix2[kord[0]][kord[1]]
         td.style.color=szamszin(Number(matrix2[kord[0]][kord[1]]));
+        if(matrix2[kord[0]][kord[1]]==0){
+            //rekurzio(kord[0], kord[1])
+        }
     }
+}
+function zaszlo(td) {
+    td.removeEventListener("contextmenu", function(){zaszlo(td)})
+    td.style.backgroundColor = "lightgray"
+    td.innerHTML="<img src='flag.png'>"
+}
+
+function rekurzio(x, y){
+    let tr=document.getElementById(x+"t")
+    let td=tr.children[y-1]
+    td.style.backgroundColor = "lightgray"
+    console.log(td);
+    rekurzio(kord[0]-1, kord[1])
+    rekurzio(kord[0]-1, kord[1]-1)
+    rekurzio(kord[0]-1, kord[1]+1)
+    rekurzio(kord[0], kord[1]-1)
+    rekurzio(kord[0], kord[1]+1)
+    rekurzio(kord[0]+1, kord[1])
+    rekurzio(kord[0]+1, kord[1]-1)
+    rekurzio(kord[0]+1, kord[1]+1)
 }
 
 
@@ -144,22 +165,29 @@ function alap(kord){
     }
 }
 
+function aknafelfedes(){
+    for (let i = 1; i < tabla1-2; i++) {  
+        let tr=document.getElementById(i+"t")
+        for (let j = 1; j < tabla2-2; j++) {
+            let td=tr.children[j-1]
+            if(matrix[i][j]==-1){
+                td.style.backgroundColor="lightgray"
+                td.innerHTML="<img src='mine.png'>"
+            }
+        }     
+    }
 
-function randomszam(also, felso){
-    return Math.floor(Math.random()*(felso-also+1)+also)
-}
-
-function minefeltoltes(){
-    let i=0;
-    while(i<mines){
-        let mine1=randomszam(1, tabla1-2)
-        let mine2=randomszam(1, tabla2-2)
-        if(matrix[mine1][mine2]==0){
-            matrix[mine1][mine2]=-1
-            i++;
+    for (let i = 1; i < tabla1+1; i++) {
+        let tr=document.getElementById(i+"t")
+        for (let j = 0; j < tabla2; j++) {
+            let td=tr.children[j]
+            td.removeAttribute("onclick", "kattintas(this)")
+            td.removeEventListener("contextmenu", function(){zaszlo(td)})
         }
     }
+    gomb.disabled=false;
 }
+
 
 function Main(){
     fokozatkivalasztas()
@@ -167,6 +195,7 @@ function Main(){
     uresmatrix(matrix2)
     minefeltoltes()
     console.log(matrix)
+    div.innerHTML="";
     tablazat()
     megszamolas();
     console.log(matrix2)
