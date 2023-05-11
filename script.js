@@ -90,12 +90,12 @@ function kattintas(td){
         aknafelfedes()
    }
    else{
+       if(matrix2[kord[0]][kord[1]]==0){
+           rekurzio(kord[0], kord[1])
+       }
         td.style.backgroundColor = "lightgray"
         td.innerHTML=matrix2[kord[0]][kord[1]]
         td.style.color=szamszin(Number(matrix2[kord[0]][kord[1]]));
-        if(matrix2[kord[0]][kord[1]]==0){
-            //rekurzio(kord[0], kord[1])
-        }
     }
 }
 function zaszlo(td) {
@@ -104,22 +104,41 @@ function zaszlo(td) {
     td.innerHTML="<img src='flag.png'>"
 }
 
+/*
 function rekurzio(x, y){
-    let tr=document.getElementById(x+"t")
-    let td=tr.children[y-1]
-    td.style.backgroundColor = "lightgray"
-    console.log(td);
-    rekurzio(kord[0]-1, kord[1])
-    rekurzio(kord[0]-1, kord[1]-1)
-    rekurzio(kord[0]-1, kord[1]+1)
-    rekurzio(kord[0], kord[1]-1)
-    rekurzio(kord[0], kord[1]+1)
-    rekurzio(kord[0]+1, kord[1])
-    rekurzio(kord[0]+1, kord[1]-1)
-    rekurzio(kord[0]+1, kord[1]+1)
+    if(x-1==tabla2-1 || x+1==1 || y+1==tabla1-1 || y-1==1){
+        return;
+    }
+    else if(matrix2[x][y]==0){
+        let tr=document.getElementById(x+"t")
+        let td=tr.children[y]
+        td.style.backgroundColor = "lightgray"
+        td.innerHTML="";
+        rekurzio(x, y-1)
+        rekurzio(x, y+1)
+        rekurzio(x-1, y)
+        rekurzio(x+1, y)
+    }
 }
-
-
+*/
+function rekurzio(x, y) {
+    if (x-1<=0 || x+1<tabla1-1 || y+1<tabla2-1 || y-1<=0) {
+      return;
+    } else if (matrix2[x][y] === 0) {
+      let tr = document.getElementById(x + "t");
+      let td = tr.children[y];
+      td.style.backgroundColor = "lightgray";
+      td.innerHTML = "";
+  
+      rekurzio(x, y - 1);
+      rekurzio(x, y + 1);
+      rekurzio(x - 1, y);
+      rekurzio(x + 1, y);
+    } else {
+      return;
+    }
+}
+    
 function szamszin(szam){
     if(szam==1){
         return "blue";
