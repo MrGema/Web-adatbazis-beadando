@@ -1,5 +1,6 @@
 var div=document.getElementById("jatekter")
 var aknamaradek=document.getElementById("aknamaradek")
+var h1=document.getElementById("text")
 var matrix=[];
 var tabla1=0;
 var tabla2=0;
@@ -49,13 +50,15 @@ function tablazat(){
                 event.preventDefault();
                 return false;
             },false)
-            table.addEventListener('mousedown', handleCellMouseDown);
-            table.addEventListener('mouseup', handleCellMouseUp);
-            table.addEventListener('mouseleave', handleCellMouseLeave);
-            table.addEventListener('click', handleCellClick);
+            /*
+            td.addEventListener('mousedown', handleCellMouseDown);
+            td.addEventListener('mouseup', handleCellMouseUp);
+            td.addEventListener('mouseleave', handleCellMouseLeave);
+            td.addEventListener('click', handleCellClick);
             td.addEventListener('dragstart', event => {
                 event.preventDefault();
               });
+              */
             tr.appendChild(td)
             td.dataset.click=Number(0)
         }  
@@ -137,10 +140,10 @@ function szamszin(szam){
         return "black"
     }
 }
+/*
 function handleCellMouseDown(event) {
     if (event.button == 0) { //bal
         ballenyomva= true;
-        handleCellClick(event)
     }
 }
   function handleCellMouseUp(event) {
@@ -148,7 +151,6 @@ function handleCellMouseDown(event) {
         ballenyomva = false;
     }
 }
-  
 function handleCellMouseLeave(event) {
     ballenyomva = false;
 }
@@ -185,7 +187,7 @@ function handleCellClick(event) {
         }
     }
 }
-
+*/
 
 function kattintas(td){
    var kord=[Number(td.value[0]), Number(td.value[1])]
@@ -194,6 +196,7 @@ function kattintas(td){
         td.style.backgroundColor="lightgray"
         td.innerHTML="<img src='mine.png'>"
         aknafelfedes()
+        h1.innerHTML="Veszítettél!"
    }
    else{
        if(matrix[kord[0]][kord[1]]==0){
@@ -249,9 +252,7 @@ function zaszlo(td){
                 td.parentNode.replaceChild(newtd, td)
             }
         }
-        setTimeout(() => {
-            alert("nyertel!")
-        }, 300);
+        h1.innerHTML="Nyertél!"
         gomb.disabled=false;
     }
     talalt=0;
@@ -327,6 +328,7 @@ function nyerte(){
 
 function Main(){
     matrix=[]
+    h1.innerHTML="Minesweeper"
     fokozatkivalasztas()
     uresmatrix(matrix)
     console.log(matrix)
